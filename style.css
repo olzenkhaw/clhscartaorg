@@ -1,0 +1,134 @@
+body {
+    font-family: sans-serif;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    font-size: 1.5em;
+    margin-bottom: 30px;
+}
+
+/* Basic Chart Styling */
+.org-chart {
+    /* Centers the top node if it's the only one at its level */
+    text-align: center;
+}
+
+.org-chart ul {
+    padding-left: 20px; /* Controls indentation */
+    list-style: none;
+    position: relative; /* Needed for connecting lines */
+    margin-top: 10px;
+}
+
+/* After initial centering, align children to the left */
+.org-chart ul ul {
+    text-align: left;
+}
+
+
+.org-chart li {
+    margin: 15px 0; /* Space between nodes vertically */
+    position: relative; /* Needed for connecting lines */
+}
+
+/* Node Styling */
+.org-chart .node {
+    display: inline-block; /* Allows nodes to have width/height/padding */
+    border: 1px solid #666;
+    padding: 8px 12px;
+    border-radius: 5px;
+    min-width: 150px; /* Minimum width for readability */
+    text-align: center;
+    font-size: 0.9em;
+    line-height: 1.3;
+    background-color: #f9f9f9; /* Default background */
+    position: relative; /* To position pseudo-elements if needed later */
+    z-index: 1; /* Keep node above lines */
+}
+
+/* Color Coding from Image */
+.org-chart .node.yellow { background-color: #ffffcc; border-color: #cccc00; }
+.org-chart .node.green { background-color: #ccffcc; border-color: #00cc00; }
+.org-chart .node.blue { background-color: #cce6ff; border-color: #0066cc; }
+.org-chart .node.orange { background-color: #ffe0cc; border-color: #ff9933; }
+.org-chart .node.pink { background-color: #ffccf2; border-color: #ff66cc; }
+.org-chart .node.grey { background-color: #e0e0e0; border-color: #999999; }
+.org-chart .node.lightblue { background-color: #d4f1f9; border-color: #73b9cc; } /* Adjusted light blue */
+
+
+/* --- Basic Connecting Lines --- */
+/* Style list items to look like they are connected */
+
+/* Vertical line down from parent */
+.org-chart li::before {
+    content: '';
+    position: absolute;
+    top: -10px; /* Start line slightly above the node */
+    left: -10px; /* Position line to the left */
+    width: 1px;
+    height: calc(100% + 5px); /* Extend slightly below */
+    background-color: #ccc;
+    z-index: 0; /* Place lines behind nodes */
+}
+
+/* Horizontal line across to node */
+.org-chart li::after {
+    content: '';
+    position: absolute;
+    top: 18px; /* Align vertically with node center (adjust as needed) */
+    left: -10px; /* Start from the vertical line */
+    width: 10px; /* Length of the horizontal connector */
+    height: 1px;
+    background-color: #ccc;
+    z-index: 0;
+}
+
+/* Remove the downward line from the very first node in any list */
+.org-chart ul > li:first-child::before {
+    top: 18px; /* Start vertical line from the horizontal line */
+    height: calc(100% - 18px + 5px);
+}
+
+/* Remove the connecting lines for the top-level items coming from root */
+.org-chart > ul > li::before,
+.org-chart > ul > li::after {
+    display: none;
+}
+
+/* Adjust line for the last child in a list */
+.org-chart li:last-child::before {
+     height: 28px; /* Only extends down to the node's horizontal line */
+}
+
+/* --- Toggle Functionality Styling --- */
+.org-chart .toggle {
+    cursor: pointer; /* Indicate it's clickable */
+    /* Add a visual indicator for toggle state */
+}
+
+.org-chart .toggle::before {
+    content: '[-] '; /* Default: Expanded */
+    font-weight: bold;
+    display: inline-block; /* Allow spacing */
+    margin-right: 4px;
+    color: #333;
+}
+
+/* Style for collapsed state */
+.org-chart li.collapsed > .toggle::before {
+    content: '[+] '; /* Collapsed */
+}
+
+.org-chart li.collapsed > ul {
+    display: none; /* Hide children */
+}
+
+/* Improve appearance of names */
+.org-chart .node strong {
+    display: block; /* Put name on new line */
+    margin-top: 4px;
+    font-weight: normal; /* Or bold if preferred */
+    color: #333;
+}
