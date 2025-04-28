@@ -10,8 +10,7 @@ h1 {
 
 /* Basic Chart Styling */
 .org-chart {
-    /* Centers the top node if it's the only one at its level */
-    text-align: center;
+    /* Centers the top node if it's the only one at its level */    
 }
 
 .org-chart ul {
